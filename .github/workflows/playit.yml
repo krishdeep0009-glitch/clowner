@@ -1,0 +1,28 @@
+name: Playit Tunnel Runner
+
+on:
+  workflow_dispatch: # Allows you to start it manually from the Actions tab
+
+jobs:
+  run-tunnel:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download & Install Playit
+        run: |
+          curl -SsL https://playit-cloud.github.io/playit-releases/download/playit-linux-amd64 -o playit
+          chmod +x playit
+
+      - name: Run Playit Tunnel
+        env:
+          # This pulls your secret key from GitHub repository secrets
+          PLAYIT_SECRET_KEY: ${{ secrets.PLAYIT_SECRET_KEY }}
+        run: |
+          if [ -z "$PLAYIT_SECRET_KEY" ]; then
+            echo "Error: PLAYIT_SECRET_KEY secret is not set in GitHub Repository Secrets!"
+            exit 1
+          fi
+          # Run playit programmatically using your secret key
+          ./playit --secret-key "$PLAYIT_SECRET_KEY"
