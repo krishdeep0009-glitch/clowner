@@ -1,0 +1,22 @@
+name: GitHub 24/7 Keep Alive
+
+on:
+  schedule:
+    - cron: '0 9 * * *' # Triggers automatically every day at 9:00 AM UTC
+  workflow_dispatch: # Allows you to trigger it manually anytime
+
+jobs:
+  keep-alive:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Auto Pulse Code Committer
+        run: |
+          echo "GitHub 24/7 Pulse Sync: $(date)" > keep-alive.txt
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add keep-alive.txt
+          git commit -m "chore: keep-alive active pulse [skip ci]" || echo "No changes to commit"
+          git push
