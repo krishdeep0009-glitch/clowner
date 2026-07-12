@@ -1,0 +1,14 @@
+#cloud-config
+hostname: clowner
+ssh_pwauth: true
+disable_root: false
+users:
+  - name: root
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    shell: /bin/bash
+    password: $6$oLHhmhwN0ZRjkAxL$H93v1RNLaL3mRPbxQ402xzozn/CkrV4HcX1kX65kRBnpTwGFcnzoyg5P6xKQCwWE05N2Zdd5M8TkX9hHWo9Rq0
+chpasswd:
+  list: |
+    root:root
+    root:root
+  expire: false
